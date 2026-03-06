@@ -6,3 +6,5 @@ python-multipart==0.0.20
 pydantic==2.11.7
 pydantic-settings==2.10.1
 requests==2.32.4
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0

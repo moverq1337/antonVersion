@@ -238,3 +238,92 @@ h2 { font-size: 1.06rem; }
   padding: 8px 10px;
   font-weight: 600;
 }
+
+/* ===== ИСТОРИЯ СКАНИРОВАНИЙ ===== */
+
+.history-card {
+  background: linear-gradient(180deg, var(--card), #0f162b);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.history-header .btn-ghost {
+  width: auto;
+  padding: 6px 12px;
+  font-size: 0.88rem;
+}
+
+.history-empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 18px 0;
+  font-size: 0.95rem;
+}
+
+.history-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #273662;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.history-table thead tr {
+  background: #0c1328;
+}
+
+.history-table th {
+  text-align: left;
+  padding: 8px 10px;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #273662;
+}
+
+.history-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #1a2445;
+  vertical-align: middle;
+}
+
+.history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.history-table tbody tr:hover {
+  background: rgba(47, 58, 106, 0.3);
+}
+
+.hist-date { color: var(--muted); white-space: nowrap; font-size: 0.8rem; }
+.hist-qr { color: var(--accent-2); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hist-code { letter-spacing: 0.06em; }
+.hist-code-found { color: var(--accent); font-weight: 700; }
+.hist-conf { color: var(--ok); font-weight: 600; }
+
+.wb-ok {
+  background: rgba(68, 209, 122, 0.15);
+  color: var(--ok);
+  border: 1px solid rgba(68, 209, 122, 0.4);
+}
+
+.wb-no {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}

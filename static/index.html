@@ -52,6 +52,28 @@
       </div>
       <p class="legend"><span class="chip uncertain-chip">?</span> сомнительный символ</p>
     </section>
+
+    <section class="history-card">
+      <div class="history-header">
+        <h2>История сканирований</h2>
+        <button id="refresh-history" class="btn btn-ghost" type="button">↻ Обновить</button>
+      </div>
+      <div id="history-empty" class="history-empty">История пуста</div>
+      <div class="history-table-wrap" id="history-table-wrap" hidden>
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Время</th>
+              <th>QR</th>
+              <th>Код</th>
+              <th>WB</th>
+              <th>Точность</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
   <script src="/static/script.js"></script>
 </body>
