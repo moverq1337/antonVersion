@@ -1,0 +1,240 @@
+﻿:root {
+  --bg-1: #070b1a;
+  --bg-2: #0d1330;
+  --card: #12192e;
+  --card-soft: #171f37;
+  --line: #2f3a6a;
+  --text: #e9eeff;
+  --muted: #9da9d8;
+  --accent: #ff2a95;
+  --accent-2: #2be7ff;
+  --ok: #44d17a;
+  --warn-bg: #3a2a0d;
+  --warn-fg: #ffd38a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: radial-gradient(1200px 700px at 70% -10%, #202e65 0%, rgba(32, 46, 101, 0) 55%),
+              linear-gradient(160deg, var(--bg-1), var(--bg-2));
+  font-family: "Segoe UI", "SF Pro Text", system-ui, sans-serif;
+}
+
+.app-shell {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  padding: 14px 12px calc(16px + env(safe-area-inset-bottom));
+  display: grid;
+  gap: 12px;
+}
+
+.top-card,
+.preview-card,
+.result-card,
+.camera-sheet {
+  background: linear-gradient(180deg, var(--card), #0f162b);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+}
+
+h1, h2 {
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+h1 { font-size: clamp(1.2rem, 4.2vw, 1.8rem); }
+h2 { font-size: 1.06rem; }
+
+.top-card p {
+  margin: 8px 0 12px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btn {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  min-height: 44px;
+  padding: 10px 12px;
+  font-weight: 700;
+  font-size: 0.96rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(120deg, var(--accent), #ff4db2);
+}
+
+.btn-secondary {
+  color: #d8f8ff;
+  background: linear-gradient(120deg, #12657a, #218ea6);
+}
+
+.btn-ghost {
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+}
+
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.viewfinder-wrap {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #040812;
+  aspect-ratio: 3/4;
+  border: 1px solid #28356a;
+  margin-bottom: 10px;
+}
+
+#camera-view {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.viewfinder-frame {
+  position: absolute;
+  inset: 14% 12%;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  border-radius: 14px;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+#preview {
+  width: 100%;
+  min-height: 240px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px dashed #334381;
+  background: #0b1022;
+}
+
+.status {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.big-result {
+  border: 2px solid #3852a0;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 10px;
+  background: var(--card-soft);
+}
+
+.big-result.hot {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px rgba(255, 42, 149, 0.2);
+}
+
+.big-label {
+  color: #b6c4f9;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.big-value {
+  font-size: clamp(1.08rem, 6vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  word-break: break-all;
+}
+
+.code-value { color: var(--accent); }
+
+.meta-box {
+  margin-top: 10px;
+  border-radius: 12px;
+  background: #0c1328;
+  border: 1px solid #273662;
+  padding: 10px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.meta-row:last-child { margin-bottom: 0; }
+
+.legend {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.chip {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.uncertain-chip {
+  color: var(--warn-fg);
+  background: var(--warn-bg);
+  border: 1px solid #806027;
+}
+
+.char { display: inline-block; }
+
+.char.uncertain {
+  color: var(--warn-fg);
+  background: var(--warn-bg);
+  border: 1px solid #806027;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
+@media (max-width: 520px) {
+  .action-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mode-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+#ocr-mode {
+  border: 1px solid #3a4a88;
+  background: #0d1630;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600;
+}

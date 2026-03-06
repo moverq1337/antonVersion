@@ -1,0 +1,58 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>QR Scanner Mistral</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="top-card">
+      <h1>QR Scanner (Mistral AI)</h1>
+      <p>Загрузите фото или снимите на камеру. Определяется самый крупный QR, проверяется WB сверху, извлекается QR и код под ним.</p>
+      <div class="action-row">
+        <label class="btn btn-primary" for="file-input">Добавить изображение</label>
+        <button id="open-camera" class="btn btn-secondary" type="button">Сделать снимок</button>
+      </div>
+      <input id="file-input" type="file" accept="image/*" hidden />
+    </section>
+
+    <section class="camera-sheet" id="camera-panel" hidden>
+      <div class="sheet-header">
+        <h2>Камера</h2>
+        <button id="close-camera" class="btn btn-ghost" type="button">Закрыть</button>
+      </div>
+      <div class="viewfinder-wrap">
+        <video id="camera-view" playsinline muted></video>
+        <div class="viewfinder-frame"></div>
+      </div>
+      <button id="capture-photo" class="btn btn-primary" type="button">Сделать фото</button>
+    </section>
+
+    <section class="preview-card">
+      <h2>Изображение</h2>
+      <img id="preview" alt="Предпросмотр" />
+      <p id="status" class="status">Ожидание загрузки...</p>
+    </section>
+
+    <section class="result-card">
+      <h2>Результат</h2>
+      <div class="big-result">
+        <div class="big-label">Содержимое QR кода</div>
+        <div id="qr-content" class="big-value">-</div>
+      </div>
+      <div class="big-result hot">
+        <div class="big-label">Найденные цифры/буквы</div>
+        <div id="code-content" class="big-value code-value">-</div>
+      </div>
+      <div class="meta-box" id="meta-box">
+        <div class="meta-row"><span>QR:</span><strong id="meta-qr">-</strong></div>
+        <div class="meta-row"><span>Код:</span><strong id="meta-code">-</strong></div>
+      </div>
+      <p class="legend"><span class="chip uncertain-chip">?</span> сомнительный символ</p>
+    </section>
+  </main>
+  <script src="/static/script.js"></script>
+</body>
+</html>

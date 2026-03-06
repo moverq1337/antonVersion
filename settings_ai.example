@@ -1,0 +1,7 @@
+﻿# Required
+MISTRAL_API_KEY=PUT_YOUR_KEY_HERE
+
+# Optional
+MISTRAL_AI_MODEL=pixtral-large-latest
+MISTRAL_PROMPT_WB=Read exactly the two red letters above the largest QR code. Return only letters.
+MISTRAL_PROMPT_CODE=Read the alphanumeric code below the same largest QR code. Return only A-Z and 0-9.
