@@ -31,11 +31,10 @@ class OCRProvider(ABC):
 
 
 class MistralAIProvider(OCRProvider):
-    def __init__(self, api_key: str, model: str, prompt_wb: str, prompt_code: str):
+    def __init__(self, api_key: str, model: str, prompt: str):
         self.api_key = api_key
         self.model = model
-        self.prompt_wb = prompt_wb
-        self.prompt_code = prompt_code
+        self.prompt = prompt
         self._last_call = {
             'provider': 'mistral_ai',
             'model': model,
@@ -45,14 +44,40 @@ class MistralAIProvider(OCRProvider):
         }
 
     def read_wb(self, image: np.ndarray) -> OCRResult:
-        text, conf = self._extract_text(image, prompt=self.prompt_wb)
-        cleaned = re.sub(r'[^A-Z]', '', text.upper())
-        return OCRResult(text=cleaned, confidence=conf)
+        # Single-prompt mode: WB detected locally for speed/stability.
+        if image is None or image.size == 0:
+            return OCRResult(text='', confidence=0.0)
+
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        mask1 = cv2.inRange(hsv, (140, 45, 45), (179, 255, 255))
+        mask2 = cv2.inRange(hsv, (0, 45, 45), (12, 255, 255))
+        red = cv2.bitwise_or(mask1, mask2)
+
+        kernel = np.ones((3, 3), dtype=np.uint8)
+        red = cv2.morphologyEx(red, cv2.MORPH_OPEN, kernel, iterations=1)
+        red = cv2.morphologyEx(red, cv2.MORPH_CLOSE, kernel, iterations=1)
+
+        red_ratio = float(np.count_nonzero(red)) / float(red.size)
+        num_labels, _, stats, _ = cv2.connectedComponentsWithStats(red, connectivity=8)
+        components = 0
+        for i in range(1, num_labels):
+            area = int(stats[i, cv2.CC_STAT_AREA])
+            if area >= 30:
+                components += 1
+
+        if red_ratio >= 0.008 and 1 <= components <= 8:
+            conf = min(0.95, 0.55 + red_ratio * 8.0)
+            return OCRResult(text='WB', confidence=conf)
+
+        return OCRResult(text='', confidence=0.0)
 
     def read_code(self, image: np.ndarray) -> OCRResult:
-        text, conf = self._extract_text(image, prompt=self.prompt_code)
-        cleaned = re.sub(r'[^A-Z0-9]', '', text.upper())
-        return OCRResult(text=cleaned, confidence=conf)
+        text, conf = self._extract_text(image, prompt=self.prompt)
+        digits = ''.join(ch for ch in str(text) if ch.isdigit())
+        # Keep realistic length window for this label format.
+        if len(digits) > 16:
+            digits = digits[:16]
+        return OCRResult(text=digits, confidence=conf)
 
     def get_last_call(self) -> dict:
         return dict(self._last_call)
@@ -143,20 +168,12 @@ def _resolve_ai_model() -> str:
     return settings.mistral_model
 
 
-def _resolve_prompt_wb() -> str:
+def _resolve_prompt() -> str:
     cfg = _read_settings_from_file()
-    value = cfg.get('MISTRAL_PROMPT_WB', '').strip()
+    value = cfg.get('MISTRAL_PROMPT', '').strip()
     if value:
         return value
-    return 'Read exactly the two red letters above the largest QR code. Return only letters.'
-
-
-def _resolve_prompt_code() -> str:
-    cfg = _read_settings_from_file()
-    value = cfg.get('MISTRAL_PROMPT_CODE', '').strip()
-    if value:
-        return value
-    return 'Read the alphanumeric code below the same largest QR code. Return only A-Z and 0-9.'
+    return 'Write a numeric code, which is located in two lines immediately below the largest QR code, above which there are two red letters WB. Return digits only.'
 
 
 def build_mistral_ai_provider() -> Optional[OCRProvider]:
@@ -166,8 +183,7 @@ def build_mistral_ai_provider() -> Optional[OCRProvider]:
     return MistralAIProvider(
         api_key=api_key,
         model=_resolve_ai_model(),
-        prompt_wb=_resolve_prompt_wb(),
-        prompt_code=_resolve_prompt_code(),
+        prompt=_resolve_prompt(),
     )
 
 
