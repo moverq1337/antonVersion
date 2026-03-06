@@ -1,0 +1,22 @@
+# Git
+.git
+.gitignore
+
+# Python кэш
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+
+# Виртуальные окружения
+.venv
+venv
+env/
+
+# Секреты — не копировать в образ!
+settings_ai
+.env
+
+# Прочее
+*.md
+frontend/
